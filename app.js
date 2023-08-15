@@ -26,14 +26,14 @@ app.set('views',path.join(__dirname,'views'))
 app.use(express.urlencoded({extended:true}))
 app.use(mongoSanitize())
 const dbUrl= process.env.DB_URL || 'mongodb://0.0.0.0:27017/yelp-camps'
-// const dbUrl= "mongodb+srv://sushanthreddynalabolu:3EomrHSb6cHjWUCN@cluster0.uo2cblb.mongodb.net/?retryWrites=true&w=majority"
+ 
 
 mongoose.connect(dbUrl).then(()=>console.log('mongoose is connected')).catch(err=>console.log(err))
 const userRoutes=require('./routes/user')
 const campgroundRoutes=require('./routes/campground')
 const reviews=require('./routes/reviews')
 
-// const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
+ 
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     touchAfter: 24 * 60 * 60,
