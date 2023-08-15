@@ -25,19 +25,20 @@ app.engine('ejs',ejsMate)
 app.set('views',path.join(__dirname,'views'))
 app.use(express.urlencoded({extended:true}))
 app.use(mongoSanitize())
-const dbUrl= 'mongodb://0.0.0.0:27017/yelp-camps'
+const dbUrl= process.env.DB_URL || 'mongodb://0.0.0.0:27017/yelp-camps'
+// const dbUrl= "mongodb+srv://sushanthreddynalabolu:3EomrHSb6cHjWUCN@cluster0.uo2cblb.mongodb.net/?retryWrites=true&w=majority"
 
 mongoose.connect(dbUrl).then(()=>console.log('mongoose is connected')).catch(err=>console.log(err))
 const userRoutes=require('./routes/user')
 const campgroundRoutes=require('./routes/campground')
 const reviews=require('./routes/reviews')
 
-const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
+// const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     touchAfter: 24 * 60 * 60,
     crypto: {
-        secret
+        secret: 'thisshouldbeabettersecret!'
     }
 });
 store.on("error",function (e){
@@ -46,12 +47,12 @@ store.on("error",function (e){
 
 const sessionConfig={
     store,
-    secret,
+    secret:'thisshouldbeabettersecret!',
     resave:false,
     saveUninitialized:true,
     cookie:{
         httpOnly:true,
-        secure:true,
+        // secure:true,
         expires:Date.now()+1000*60*60*24*7,
         maxAge:1000*60*60*24*7
     }
@@ -89,7 +90,7 @@ app.use((err,req,res,next)=>{
     res.status(statusCode).render('error',{err})
 })
  
-const port= 5000
+const port= process.env.PORT || 5000
 app.listen(port,()=>{
     console.log("the server is running at 5000")
 })
