@@ -25,8 +25,7 @@ app.engine('ejs',ejsMate)
 app.set('views',path.join(__dirname,'views'))
 app.use(express.urlencoded({extended:true}))
 app.use(mongoSanitize())
-// const dbUrl=process.env.DB_URL
-const dbUrl= process.env.DB_URL|| 'mongodb://0.0.0.0:27017/yelp-camps'
+const dbUrl= process.env.DB_URL || 'mongodb://0.0.0.0:27017/yelp-camps'
 
 mongoose.connect(dbUrl).then(()=>console.log('mongoose is connected')).catch(err=>console.log(err))
 const userRoutes=require('./routes/user')
